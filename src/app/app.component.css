@@ -1,0 +1,46 @@
+.points {
+    border: 1px solid black;
+    margin: 5px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    float: left;
+    align-items: center;
+}
+.frame {
+    border: 1px solid black;
+    margin: 5px;
+    width: 100px;
+    height: 80px;
+    float: left;
+}
+.frame-title {
+    text-align: center;
+    border-bottom: solid thin Black;
+    background-color: #BBBB9D;
+}
+.throw-1 {
+    float: left;
+    width: 50%;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.throw-2 {
+    width: 49%;
+    height: 40%;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.frame-score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 33%;
+}
