@@ -8,18 +8,18 @@
   <div *ngFor="let frame of frames; let i = index">
     <ng-container *ngIf="i < 9">
       <div class="frame">
-        <div class="frame-title">{{frame.number}}</div>
-        <div class="throw-1">{{frame.throw1}}</div>
-        <div class="throw-2">{{getSecondScoreSimbol(frame)}}</div>
+        <div class="frame-title">{{i + 1}}</div>
+        <div class="throw-1">{{frame.score[0] ? frame.score[0].view : null}}</div>
+        <div class="throw-2">{{frame.score[1] ? frame.score[1].view : null}}</div>
         <div class="frame-score">{{getTotalScore(i)}}</div>
       </div>
     </ng-container>
     <ng-container *ngIf="i === 9">
       <div class="frame">
-        <div class="frame-title">{{frame.number}}</div>
-        <div class="throw-1" style="width: 32%">{{getSimbolLastFrame(frame, 1)}}</div>
-        <div class="throw-2" style="width: 33%; float: left;">{{getSimbolLastFrame(frame, 2)}}</div>
-        <div class="throw-2" style="width: 33%">{{getSimbolLastFrame(frame, 3)}}</div>
+        <div class="frame-title">{{i + 1}}</div>
+        <div class="throw-1" style="width: 32%">{{frame.score[0] ? frame.score[0].view : null}}</div>
+        <div class="throw-2" style="width: 33%; float: left;">{{frame.score[1] ? frame.score[1].view : null}}</div>
+        <div class="throw-2" style="width: 33%">{{frame.score[2] ? frame.score[2].view : null}}</div>
         <div class="frame-score">{{getTotalScore(i)}}</div>
       </div>
     </ng-container>
