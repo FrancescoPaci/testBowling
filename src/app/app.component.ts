@@ -69,7 +69,6 @@ export class AppComponent {
         if (point === 10) {
           this.frames[actualFrame].score.push({ point: 10, view: null })
           this.frames[actualFrame].score.push({ point: 0, view: 'X' })
-          this.frames[actualFrame].totalScore = this.sumScore(this.frames[actualFrame].score)
           this.actualFrame += 1
           this.generatePoints(11)
         } else {
@@ -82,8 +81,8 @@ export class AppComponent {
           this.frames[actualFrame].score.push({ point: point, view: '/' })
         } else {
           this.frames[actualFrame].score.push({ point: point, view: point })
+          this.frames[actualFrame].totalScore = this.sumScore(this.frames[actualFrame].score)
         }
-        this.frames[actualFrame].totalScore = this.sumScore(this.frames[actualFrame].score)
         this.actualFrame += 1
         this.actualThrow = 0
         this.generatePoints(11)
@@ -96,7 +95,9 @@ export class AppComponent {
           this.frames[actualFrame - 1].totalScore = this.sumScore(this.frames[actualFrame - 1].score)
         } else if (this.frames[actualFrame - 1].score[1].view === 'X') {
           this.frames[actualFrame - 1].score.push({ point: point, view: point })
-          this.frames[actualFrame - 1].totalScore = this.sumScore(this.frames[actualFrame - 1].score)
+          if (this.frames[actualFrame - 1].score.length === 4) {
+            this.frames[actualFrame - 1].totalScore = this.sumScore(this.frames[actualFrame - 1].score)
+          }
           if (actualFrame > 1) {
             if (this.frames[actualFrame - 2].score[1].view === 'X' &&
               this.sumScore(this.frames[actualFrame - 2].score) < 30 && actualThrow === 0) {
