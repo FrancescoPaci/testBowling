@@ -16,7 +16,7 @@ export class AppComponent {
   actualThrow = 0
 
   ngOnInit() {
-    this.points = this.generateArrayOfNumbers(11)
+    this.generatePoints(11)
     this.createSets()
   }
 
@@ -27,66 +27,66 @@ export class AppComponent {
     }
   }
 
-  generateArrayOfNumbers(numbers: number) {
-    return [...Array(numbers).keys()]
+  generatePoints(numbers: number) {
+    this.points = [...Array(numbers).keys()]
   }
 
   addPoint(point: number) {
     let actualFrame = this.actualFrame
     let actualThrow = this.actualThrow
-    if (this.actualFrame === 9) {
-      if (this.actualThrow === 0) {
+    if (actualFrame === 9) {
+      if (actualThrow === 0) {
         if (point === 10) {
-          this.frames[this.actualFrame].score.push({ point: 10, view: 'X' })
+          this.frames[actualFrame].score.push({ point: 10, view: 'X' })
           this.actualThrow += 1
-          this.points = this.generateArrayOfNumbers(11)
+          this.generatePoints(11)
         } else {
-          this.frames[this.actualFrame].score.push({ point: point, view: point })
+          this.frames[actualFrame].score.push({ point: point, view: point })
           this.actualThrow += 1
-          this.points = this.generateArrayOfNumbers(11 - point)
+          this.generatePoints(11 - point)
         }
       } else {
-        if (point === 10 && (this.actualThrow === 0 || this.actualThrow === 2 ||
-          (this.actualThrow === 1 && this.frames[this.actualFrame].score[0].point === 10))) {
-          this.frames[this.actualFrame].score.push({ point: 10, view: 'X' })
-        } else if (this.actualThrow === 1 && point + this.frames[this.actualFrame].score[0].point === 10) {
-          this.frames[this.actualFrame].score.push({ point: point, view: '/' })
+        if (point === 10 && (actualThrow === 0 || actualThrow === 2 ||
+          (actualThrow === 1 && this.frames[actualFrame].score[0].point === 10))) {
+          this.frames[actualFrame].score.push({ point: 10, view: 'X' })
+        } else if (actualThrow === 1 && point + this.frames[actualFrame].score[0].point === 10) {
+          this.frames[actualFrame].score.push({ point: point, view: '/' })
         } else {
-          this.frames[this.actualFrame].score.push({ point: point, view: point })
+          this.frames[actualFrame].score.push({ point: point, view: point })
         }
-        if (this.actualThrow === 0 || (this.actualThrow === 1 &&
-          (this.frames[this.actualFrame].score[0].view === 'X' ||
-          this.frames[this.actualFrame].score[1].view === '/'))) {
+        if (actualThrow === 0 || (actualThrow === 1 &&
+          (this.frames[actualFrame].score[0].view === 'X' ||
+            this.frames[actualFrame].score[1].view === '/'))) {
           this.actualThrow += 1
-          this.points = this.generateArrayOfNumbers(11)
+          this.generatePoints(11)
         } else {
           this.points = []
-          this.frames[this.actualFrame].totalScore = this.sumScore(this.frames[this.actualFrame].score)
+          this.frames[actualFrame].totalScore = this.sumScore(this.frames[actualFrame].score)
         }
       }
     } else {
-      if (this.actualThrow === 0) {
+      if (actualThrow === 0) {
         if (point === 10) {
-          this.frames[this.actualFrame].score.push({ point: 10, view: null })
-          this.frames[this.actualFrame].score.push({ point: 0, view: 'X' })
-          this.frames[this.actualFrame].totalScore = this.sumScore(this.frames[this.actualFrame].score)
+          this.frames[actualFrame].score.push({ point: 10, view: null })
+          this.frames[actualFrame].score.push({ point: 0, view: 'X' })
+          this.frames[actualFrame].totalScore = this.sumScore(this.frames[actualFrame].score)
           this.actualFrame += 1
-          this.points = this.generateArrayOfNumbers(11)
+          this.generatePoints(11)
         } else {
-          this.frames[this.actualFrame].score.push({ point: point, view: point })
+          this.frames[actualFrame].score.push({ point: point, view: point })
           this.actualThrow += 1
-          this.points = this.generateArrayOfNumbers(11 - point)
+          this.generatePoints(11 - point)
         }
-      } else if (this.actualThrow === 1) {
-        if (point + this.frames[this.actualFrame].score[0].point === 10) {
-          this.frames[this.actualFrame].score.push({ point: point, view: '/' })
+      } else if (actualThrow === 1) {
+        if (point + this.frames[actualFrame].score[0].point === 10) {
+          this.frames[actualFrame].score.push({ point: point, view: '/' })
         } else {
-          this.frames[this.actualFrame].score.push({ point: point, view: point })
+          this.frames[actualFrame].score.push({ point: point, view: point })
         }
-        this.frames[this.actualFrame].totalScore = this.sumScore(this.frames[this.actualFrame].score)
+        this.frames[actualFrame].totalScore = this.sumScore(this.frames[actualFrame].score)
         this.actualFrame += 1
         this.actualThrow = 0
-        this.points = this.generateArrayOfNumbers(11)
+        this.generatePoints(11)
       }
     }
     if (actualFrame > 0) {
@@ -99,7 +99,7 @@ export class AppComponent {
           this.frames[actualFrame - 1].totalScore = this.sumScore(this.frames[actualFrame - 1].score)
           if (actualFrame > 1) {
             if (this.frames[actualFrame - 2].score[1].view === 'X' &&
-              this.sumScore(this.frames[actualFrame - 2].score) < 30) {
+              this.sumScore(this.frames[actualFrame - 2].score) < 30 && actualThrow === 0) {
               this.frames[actualFrame - 2].score.push({ point: point, view: point })
               this.frames[actualFrame - 2].totalScore = this.sumScore(this.frames[actualFrame - 2].score)
             }
@@ -131,7 +131,17 @@ export class AppComponent {
     this.actualFrame = 0
     this.actualThrow = 0
     this.createSets()
-    this.points = this.generateArrayOfNumbers(11)
+    this.generatePoints(11)
+  }
+
+  getMaxPossible() {
+    let max = 300
+    for (let i = 0; i < this.frames.length; i++) {
+      if (this.frames[i].totalScore) {
+        max -= (30 - this.frames[i].totalScore)
+      }
+    }
+    return max
   }
 
 }
